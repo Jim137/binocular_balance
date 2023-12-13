@@ -21,66 +21,110 @@ Hebbian learning is crucial for understanding how experiences and behaviors can 
 It's a form of synaptic plasticity, playing a key role in learning and memory. 
 This concept has been instrumental in the development of theories about neural network function and is a foundational element in various fields, including computational neuroscience and psychology.
 
-Consider $i$-th presynaptic neuron and $j$-th postsynaptic neuron.
-The synaptic weight $w_{ji}$ can be described as following equation:
+> [!NOTE]
+> The important concept in Hebbian learning is that of synaptic plasticity, the ability of synapses to strengthen or weaken over time.
+> Consider $i$-th presynaptic neuron and $j$-th postsynaptic neuron.
+> The general dynamics of synaptic weight is described as following equation:
+> 
+> $$
+> \tau_w \frac{dw_{ji}}{dt} = c_0 + c_1^{pre}(w_{ji}) x_i + c_1^{post}(w_{ji}) y_j + c_2^{pre}(w_{ji}) x_i^2 + c_2^{post}(w_{ji}) y_j^2 + c_{11}^{corr}(w_{ji}) y_jx_i + \mathcal{O}(3)
+> $$
+> 
+> The Hebb rule make a simplest approach to fix $C_{11}^{corr}$ to a constant. The discrete version of Hebb rule is:
+> 
+> $$
+> w_{ji}(t+1) = w_{ji}(t) + \gamma y_j(t) x_{i}(t)
+> $$
+> 
+> Or, in continuous limit:
+> 
+> $$
+> \tau_w \frac{dw_{ji}}{dt} = y_j x_i
+> $$
+> 
+> where $\tau_w$ is the time constant of the synaptic weight, $y_j$ is the postsynaptic activity, and $x_i$ is the presynaptic activity.
 
-$$
-w_{ji}(t+1) = w_{ji}(t) + \gamma y_j(t) x_{i}(t)
-$$
+> [!TIP]
+> On the other hand, we can write down the the dynamics for neurons' activity as following:
+> 
+> $$
+> \tau \frac{dy_j}{dt} = -y_j + G\left(\sum_i w_{ji} x_i\right)
+> $$
+> 
+> where $\tau$ is the time constant of the neuronal activity, and $G$ is the gain function.
+> 
+> From experiments, we know that the dynamics of neuronal activity is faster than the dynamics of synaptic weight, which is $\tau \ll \tau_w$.
+> And we will have the following approximation (Steady-state approximation):
+> 
+> $$
+> y_j = G\left(\sum_i w_{ji} x_i\right)
+> $$
+> 
+> Then substitute $y_j$ into the equation of synaptic weight, we will have:
+> 
+> $$
+> \tau_w \frac{dw_{ji}}{dt} = G\left(\sum_k w_{jk} x_k\right) x_i
+> $$
+> 
+> We can see that if $x_i$ dominate the sum and hit the threshold of the gain function $G$, the synaptic weight will be increased.
 
-Or, in continuous limit:
-
-$$
-\tau_w \frac{dw_{ji}}{dt} = y_j x_i
-$$
-
-where $\tau_w$ is the time constant of the synaptic weight, $y_j$ is the postsynaptic activity, and $x_i$ is the presynaptic activity.
-
-Therefore, we can write down the the dynamics for neurons' activity as following:
-
-$$
-\tau \frac{dy_j}{dt} = -y_j + G\left(\sum_i w_{ji} x_i\right)
-$$
-
-where $\tau$ is the time constant of the neuronal activity, and $G$ is the gain function.
-
-From experiments, we know that the dynamics of neuronal activity is faster than the dynamics of synaptic weight, which is $\tau \ll \tau_w$.
-And we will have the following approximation (Steady-state approximation):
-
-$$
-y_j = G\left(\sum_i w_{ji} x_i\right)
-$$
-
-Then substitute $y_j$ into the equation of synaptic weight, we will have:
-
-$$
-\tau_w \frac{dw_{ji}}{dt} = G\left(\sum_k w_{jk} x_k\right) x_i
-$$
-
-Note that $k$ is dummy index.
-
-We can see that if $x_i$ dominate the sum and hit the threshold of the gain function $G$, the synaptic weight will be increased.
-
-However, the synaptic weight will diverge if there is no inhibition.
-Consequently, we need to introduce the [Oja's rule](https://en.wikipedia.org/wiki/Oja%27s_rule) to renormalize the synaptic weight.
-The oja-modified Hebbian learning is:
-
-$$
-\tau_w \frac{dw_{ji}}{dt} = y_j x_i - y_j^2 w_{ji}
-$$
-
-And the discrete version is:
-
-$$
-w_{ji}(t+1) = w_{ji}(t) + \eta \left[G\left(\sum_k w_{jk}(t) x_k\right)x_i-G\left(\sum_k w_{jk}(t) x_k\right)^2w_{ji}(t)\right]
-$$
-
-where $\eta$ is the learning rate.
-And which is the iteration what we will use in the following simulations.
+> [!IMPORTANT]
+> However, the synaptic weight will diverge if there is no inhibition.
+> Consequently, we need to introduce the [Oja's rule](https://en.wikipedia.org/wiki/Oja%27s_rule) to renormalize the synaptic weight.
+> The oja-modified Hebbian learning is:
+> 
+> $$
+> \tau_w \frac{dw_{ji}}{dt} = y_j x_i - w_{ji}y_j^2
+> $$
+> 
+> And the discrete version is:
+> 
+> $$
+> w_{ji}(t+1) = w_{ji}(t) + \eta \left[G\left(\sum_k w_{jk}(t) x_k\right)x_i-w_{ji}(t)G\left(\sum_k w_{jk}(t) x_k\right)^2\right]
+> $$
+> 
+> where $\eta$ is the learning rate.
 
 ### 2. BCM Theory
 
+[BCM theory](https://en.wikipedia.org/wiki/BCM_theory), a pivotal concept in neuroscience, extends the principles of Hebbian learning by introducing a dynamic threshold for synaptic plasticity.
+BCM theory, formulated in the early 1980s, proposes that the strength of synaptic connections is not only determined by simultaneous neuron activations but also influenced by the history of neuronal activity.
+The BCM model's innovative feature is its variable threshold, which adapts based on the neuron's previous firing patterns, allowing for a more nuanced understanding of learning and memory processes in the brain.
+This dynamic threshold mechanism is key to explaining both synaptic strengthening (long-term potentiation) and weakening (long-term depression), offering significant insights into neural adaptability and function.
 
+> [!NOTE]
+> The BCM theory can be described as following equation:
+> 
+> $$
+> \tau_w \frac{dw_{ji}}{dt} = y_j\left(y_j - \theta_j\right)x_i
+> $$
+> 
+> where $\theta_j$ is a dynamical threshold of the BCM theory, which can be described as following:
+> 
+> $$
+> \theta_j(t) = \langle y_j^2(t) \rangle = \frac{1}{\tau} \int_0^t y_j^2(t')e^{-(t-t')/\tau}dt'
+> $$
+
+> [!IMPORTANT]
+> Combine the Hebbian learning and BCM theory, we will have the following equation:
+>
+> $$
+> \tau_w \frac{dw_{ji}}{dt} = y_j\left(y_j - \theta_j + 1\right)x_i - w_{ji}y_j^2
+> $$
+> 
+> And the discrete version is:
+> 
+> $$
+> w_{ji}(t+1) = w_{ji}(t) + \eta \left[y_j\left(y_j - \theta_j + 1\right)x_i - w_{ji}y_j^2\right]
+> $$
+>
+> and
+>
+> $$
+> y_j(t) = G\left(\sum_i w_{ji}(t) x_i\right)
+> $$
+>
+> Which are the iteration what we will use in the following simulations.
 
 ### 3. Binocular Balance
 
