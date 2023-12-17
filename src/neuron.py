@@ -48,7 +48,7 @@ class Neuron:
 
 class weight:
     def __init__(self, pre: Neuron, post: Neuron):
-        self.value = np.float32(1)
+        self.value = np.float32(1e-5)
         self.presynaptic_neuron = pre
         self.postsynaptic_neuron = post
         self.threshold = np.float32(0)
@@ -64,10 +64,11 @@ class weight:
         self.timestamp += 1
 
     def update(self, learning_rate=0.1):
-        tmp = self.postsynaptic_neuron.value * (
-            self.postsynaptic_neuron.value - self.threshold + 1
-        ) * self.presynaptic_neuron.value - self.value * np.square(
-            self.postsynaptic_neuron.value
+        tmp = (
+            self.postsynaptic_neuron.value * 
+            ( self.postsynaptic_neuron.value - self.threshold + 1) * 
+                self.presynaptic_neuron.value 
+            - self.value * np.square(self.postsynaptic_neuron.value)
         )
         self.value = self.value + learning_rate * tmp
         self._threshold()
