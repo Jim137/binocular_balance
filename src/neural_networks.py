@@ -80,8 +80,11 @@ class bisensory_nn(neural_network):
         self.cortex.add_sensory(self.left_sensory)
         self.motor.add_cortex(self.cortex)
 
-    def add_input(self, data):
-        self.sensory.input(data)
+    def add_input(self, data0, data1=None):
+        if data1 is None:
+            data1 = data0
+        self.right_sensory.input(data0)
+        self.left_sensory.input(data1)
 
     def record(self, is_collect_pseudo=False):
         collection = {}
