@@ -1,5 +1,8 @@
-from typing import Any
 import numpy as np
+
+
+global id
+id = 0
 
 
 class Neuron:
@@ -7,29 +10,43 @@ class Neuron:
         self.value = np.float32(0)
         self.presynaptic_neuron = []
         self.weights = []
-        self.bias = 0
+        self.bias = np.float32(0)
+        self.input = np.float32(0)
+        self.timestamp = 0
+        self.tag = None
+        self.id = id
+        id += 1
 
     def __call__(self):
         return self.value
 
     def update(self, gain=lambda x: np.max([x, np.float32(0)])):
-        self.value = gain(
-            np.sum(
-                [
-                    weight.value * weight.presynaptic_neuron.value
-                    for weight in self.weights
-                ]
-            )
-        )
+        sum = [
+            weight.value * weight.presynaptic_neuron.value for weight in self.weights
+        ]
+        sum.append(self.input)
+        self.value = gain(np.sum(sum))
 
     def add_presynaptic_neuron(self, neuron):
         self.presynaptic_neuron.append(neuron)
         self.weights.append(weight(neuron, self))
 
+    def metadata(self):
+        return {
+            "value": self.value,
+            "presynaptic_neuron": self.presynaptic_neuron,
+            "weights": self.weights,
+            "bias": self.bias,
+            "input": self.input,
+            "timestamp": self.timestamp,
+            "tag": self.tag,
+            "id": self.id,
+        }
+
 
 class weight:
     def __init__(self, pre: Neuron, post: Neuron):
-        self.value = np.float32(0)
+        self.value = np.float32(1)
         self.presynaptic_neuron = pre
         self.postsynaptic_neuron = post
         self.threshold = np.float32(0)
@@ -52,3 +69,98 @@ class weight:
         )
         self.value = self.value + learning_rate * tmp
         self._threshold()
+
+    def metadata(self):
+        return {
+            "value": self.value,
+            "presynaptic_neuron_id": self.presynaptic_neuron.id,
+            "postsynaptic_neuron_id": self.postsynaptic_neuron.id,
+            "threshold": self.threshold,
+            "timestamp": self.timestamp,
+        }
+
+
+class sensory:
+    def __init__(self, number_of_neurons: int):
+        self.number_of_neurons = number_of_neurons
+        self.neurons = [Neuron() for _ in range(number_of_neurons)]
+        for neuron in self.neurons:
+            neuron.tag = "sensory"
+
+    def input(self, data):
+        n_data = len(data)
+
+        # pseudo neurons here act as convolutional neurons
+        self.pseudo_neurons = [Neuron() for _ in range(n_data)]
+        for neuron in self.pseudo_neurons:
+            neuron.tag = "pseudo_sensory"
+
+        num_cluster = int(n_data / self.number_of_neurons)
+        for i in range(n_data):
+            j = i // num_cluster
+            self.neurons[j].add_presynaptic_neuron(self.pseudo_neurons[i])
+
+    def update(self):
+        for neuron in self.pseudo_neurons:
+            neuron.update()
+        for neuron in self.neurons:
+            neuron.update()
+            for weight in neuron.weights:
+                weight.update()
+
+    def collect(self, is_collect_pseudo=False):
+        collection = [neuron.metadata() for neuron in self.neurons]
+        if is_collect_pseudo:
+            collection.extend([neuron.metadata() for neuron in self.pseudo_neurons])
+        return collection
+
+
+class cortex:
+    def __init__(self, number_of_neurons: int):
+        self.number_of_neurons = number_of_neurons
+        self.neurons = [Neuron() for _ in range(number_of_neurons)]
+        for neuron in self.neurons:
+            neuron.tag = "cortex"
+
+    def fully_connect(self):
+        for i in range(self.number_of_neurons):
+            for j in range(self.number_of_neurons):
+                if i == j:
+                    continue
+                self.neurons[i].add_presynaptic_neuron(self.neurons[j])
+
+    def add_sensory(self, sensory: sensory):
+        for i in range(self.number_of_neurons):
+            for j in range(self.sensory.number_of_neurons):
+                self.neurons[i].add_presynaptic_neuron(sensory.neurons[j])
+
+    def update(self):
+        for neuron in self.neurons:
+            neuron.update()
+            for weight in neuron.weights:
+                weight.update()
+
+    def collect(self):
+        return [neuron.metadata() for neuron in self.neurons]
+
+
+class motor:
+    def __init__(self, number_of_neurons: int):
+        self.number_of_neurons = number_of_neurons
+        self.neurons = [Neuron() for _ in range(number_of_neurons)]
+        for neuron in self.neurons:
+            neuron.tag = "motor"
+
+    def add_cortex(self, cortex: cortex):
+        for i in range(self.number_of_neurons):
+            for j in range(self.cortex.number_of_neurons):
+                self.neurons[i].add_presynaptic_neuron(cortex.neurons[j])
+
+    def update(self):
+        for neuron in self.neurons:
+            neuron.update()
+            for weight in neuron.weights:
+                weight.update()
+
+    def collect(self):
+        return [neuron.metadata() for neuron in self.neurons]
