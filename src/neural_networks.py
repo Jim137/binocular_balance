@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from neuron import sensory, cortex, motor
+from .neuron import sensory, cortex, motor
 
 
 class neural_network(object, metaclass=ABCMeta):
@@ -14,7 +14,7 @@ class neural_network(object, metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def record(self):
+    def record(self, is_collect_pseudo=False):
         pass
 
     @abstractmethod
@@ -22,7 +22,7 @@ class neural_network(object, metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def dynamic(self, time, is_record=False):
+    def dynamic(self, time, is_record=False, is_collect_pseudo=False):
         pass
 
 
@@ -41,9 +41,9 @@ class nn(neural_network):
     def add_input(self, data):
         self.sensory.input(data)
 
-    def record(self):
+    def record(self, is_collect_pseudo=False):
         collection = {}
-        collection["sensory"] = self.sensory.collect()
+        collection["sensory"] = self.sensory.collect(is_collect_pseudo)
         collection["cortex"] = self.cortex.collect()
         collection["motor"] = self.motor.collect()
         return collection
@@ -53,13 +53,13 @@ class nn(neural_network):
         self.cortex.update()
         self.motor.update()
 
-    def dynamic(self, time, is_record=False):
+    def dynamic(self, time, is_record=False, is_collect_pseudo=False):
         if is_record:
             recoding = []
         for _ in range(time):
             self._update()
             if is_record:
-                recoding.append(self.record())
+                recoding.append(self.record(is_collect_pseudo))
         if is_record:
             return recoding
         else:
@@ -83,10 +83,10 @@ class bisensory_nn(neural_network):
     def add_input(self, data):
         self.sensory.input(data)
 
-    def record(self):
+    def record(self, is_collect_pseudo=False):
         collection = {}
-        collection["right_sensory"] = self.right_sensory.collect()
-        collection["left_sensory"] = self.left_sensory.collect()
+        collection["right_sensory"] = self.right_sensory.collect(is_collect_pseudo)
+        collection["left_sensory"] = self.left_sensory.collect(is_collect_pseudo)
         collection["cortex"] = self.cortex.collect()
         collection["motor"] = self.motor.collect()
         return collection
@@ -97,13 +97,13 @@ class bisensory_nn(neural_network):
         self.cortex.update()
         self.motor.update()
 
-    def dynamic(self, time, is_record=False):
+    def dynamic(self, time, is_record=False, is_collect_pseudo=False):
         if is_record:
             recoding = []
         for _ in range(time):
             self._update()
             if is_record:
-                recoding.append(self.record())
+                recoding.append(self.record(is_collect_pseudo))
         if is_record:
             return recoding
         else:
