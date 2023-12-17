@@ -27,6 +27,7 @@ class Neuron:
         ]
         sum.append(self.input)
         self.value = gain(np.sum(sum))
+        self.timestamp += 1
 
     def add_presynaptic_neuron(self, neuron):
         self.presynaptic_neuron.append(neuron)
@@ -93,8 +94,9 @@ class sensory:
 
         # pseudo neurons here act as convolutional neurons
         self.pseudo_neurons = [Neuron() for _ in range(n_data)]
-        for neuron in self.pseudo_neurons:
+        for i, neuron in enumerate(self.pseudo_neurons):
             neuron.tag = "pseudo_sensory"
+            neuron.input = data[i]
 
         num_cluster = int(n_data / self.number_of_neurons)
         for i in range(n_data):
