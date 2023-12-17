@@ -7,6 +7,7 @@ id = 0
 
 class Neuron:
     def __init__(self):
+        global id
         self.value = np.float32(0)
         self.presynaptic_neuron = []
         self.weights = []
@@ -131,7 +132,7 @@ class cortex:
 
     def add_sensory(self, sensory: sensory):
         for i in range(self.number_of_neurons):
-            for j in range(self.sensory.number_of_neurons):
+            for j in range(sensory.number_of_neurons):
                 self.neurons[i].add_presynaptic_neuron(sensory.neurons[j])
 
     def update(self):
@@ -153,7 +154,7 @@ class motor:
 
     def add_cortex(self, cortex: cortex):
         for i in range(self.number_of_neurons):
-            for j in range(self.cortex.number_of_neurons):
+            for j in range(cortex.number_of_neurons):
                 self.neurons[i].add_presynaptic_neuron(cortex.neurons[j])
 
     def update(self):
