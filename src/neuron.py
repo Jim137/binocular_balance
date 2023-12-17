@@ -98,7 +98,7 @@ class sensory:
             neuron.tag = "pseudo_sensory"
             neuron.input = data[i]
 
-        num_cluster = int(n_data / self.number_of_neurons)
+        num_cluster = int(n_data / self.number_of_neurons) + 1
         for i in range(n_data):
             j = i // num_cluster
             self.neurons[j].add_presynaptic_neuron(self.pseudo_neurons[i])
