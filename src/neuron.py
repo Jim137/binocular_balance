@@ -57,26 +57,25 @@ class weight:
     def __call__(self):
         return self.value
 
-    def _threshold(self):
-        self.threshold = (
-            self.threshold * self.timestamp + np.square(self.postsynaptic_neuron.value)
-        ) / (self.timestamp + 1)
-        self.timestamp += 1
+    def _threshold(self, th_time_constant=1e3):
+        self.threshold *= np.exp(-1 / th_time_constant)
+        self.threshold += self.postsynaptic_neuron.value / th_time_constant
 
-    def update(self, learning_rate=0.1, method="cocktail"):
-        self._threshold()
+    def update(self, learning_rate=0.1, method="cocktail", th_time_constant=1e3):
         if method == "hebbian" or method == "hebb":
             tmp = np.float128(
                 self.postsynaptic_neuron.value * self.presynaptic_neuron.value
                 - self.value * np.square(self.postsynaptic_neuron.value)
             )
         elif method == "bcm":
+            self._threshold(th_time_constant)
             tmp = np.float128(
                 self.postsynaptic_neuron.value
                 * (self.postsynaptic_neuron.value - self.threshold)
                 * self.presynaptic_neuron.value
             )
         elif method == "cocktail":
+            self._threshold(th_time_constant)
             tmp = np.float128(
                 self.postsynaptic_neuron.value
                 * (self.postsynaptic_neuron.value - self.threshold)
