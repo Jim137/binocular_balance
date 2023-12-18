@@ -105,30 +105,21 @@ class sensory:
 
     def input(self, data):
         n_data = len(data)
-
-        # pseudo neurons here act as convolutional neurons
-        self.pseudo_neurons = [Neuron() for _ in range(n_data)]
-        for i, neuron in enumerate(self.pseudo_neurons):
-            neuron.tag = "pseudo_sensory"
-            neuron.input = data[i]
-
-        num_cluster = int(n_data / self.number_of_neurons) + 1
+        num_cluster = int(np.ceil(n_data / self.number_of_neurons))
+        for neuron in self.neurons:
+            neuron.input = np.float64(0)
         for i in range(n_data):
             j = i // num_cluster
-            self.neurons[j].add_presynaptic_neuron(self.pseudo_neurons[i])
+            self.neurons[j].input += data[i] / num_cluster
 
     def update(self, learning_rate=0.1):
-        for neuron in self.pseudo_neurons:
-            neuron.update()
         for neuron in self.neurons:
             neuron.update()
             for weight in neuron.weights:
                 weight.update(learning_rate)
 
-    def collect(self, is_collect_pseudo=False):
+    def collect(self):
         collection = [neuron.metadata() for neuron in self.neurons]
-        if is_collect_pseudo:
-            collection.extend([neuron.metadata() for neuron in self.pseudo_neurons])
         return collection
 
 
