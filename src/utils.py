@@ -2,12 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def record_splitter(recoding: list):
+def record_splitter(recording: list, nn_type: str):
     sensory = []
     cortex = []
     motor = []
-    for collection in recoding:
-        sensory.append(collection["sensory"])
+    for collection in recording:
+        if nn_type == "bisensory":
+            sensory.append([collection["right_sensory"]])
+            sensory.append([collection["left_sensory"]])
+        else:
+            sensory.append(collection["sensory"])
         cortex.append(collection["cortex"])
         motor.append(collection["motor"])
     return sensory, cortex, motor
@@ -68,3 +72,4 @@ def plot_weight_value(
                         if weight["presynaptic_neuron_id"] == presynaptic_neuron_id:
                             values.append(weight["value"])
     ax.plot(values)
+    return ax
