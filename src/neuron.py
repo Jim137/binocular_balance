@@ -8,11 +8,11 @@ id = 0
 class Neuron:
     def __init__(self):
         global id
-        self.value = np.float32(0)
+        self.value = np.float64(0)
         self.presynaptic_neuron = []
         self.weights = []
-        self.bias = np.float32(0)
-        self.input = np.float32(0)
+        self.bias = np.float64(0)
+        self.input = np.float64(0)
         self.timestamp = 0
         self.tag = None
         self.id = id
@@ -21,7 +21,10 @@ class Neuron:
     def __call__(self):
         return self.value
 
-    def update(self, gain=lambda x: np.max([x, np.float32(0)])):
+    def update(
+        self,
+        gain=lambda x: np.max([x, np.float64(0)]),
+    ):
         sum = [
             weight.value * weight.presynaptic_neuron.value for weight in self.weights
         ]
@@ -51,10 +54,10 @@ class Neuron:
 
 class weight:
     def __init__(self, pre: Neuron, post: Neuron):
-        self.value = np.float32(1e-5)
+        self.value = np.float128(1e-1)
         self.presynaptic_neuron = pre
         self.postsynaptic_neuron = post
-        self.threshold = np.float32(0)
+        self.threshold = np.float64(0)
         self.timestamp = 0
 
     def __call__(self):
