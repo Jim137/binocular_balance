@@ -33,11 +33,14 @@ class Neuron:
         self.presynaptic_neuron.append(neuron)
         self.weights.append(weight(neuron, self))
 
+    def weights_metadata(self):
+        return [weight.metadata() for weight in self.weights]
+
     def metadata(self):
         return {
             "value": self.value,
             "presynaptic_neuron": self.presynaptic_neuron,
-            "weights": self.weights,
+            "weights": self.weights_metadata(),
             "bias": self.bias,
             "input": self.input,
             "timestamp": self.timestamp,
