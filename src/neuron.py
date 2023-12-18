@@ -63,15 +63,29 @@ class weight:
         ) / (self.timestamp + 1)
         self.timestamp += 1
 
-    def update(self, learning_rate=0.1):
-        tmp = (
-            self.postsynaptic_neuron.value * 
-            ( self.postsynaptic_neuron.value - self.threshold + 1) * 
-                self.presynaptic_neuron.value 
-            - self.value * np.square(self.postsynaptic_neuron.value)
-        )
-        self.value = self.value + learning_rate * tmp
+    def update(self, learning_rate=0.1, method="cocktail"):
         self._threshold()
+        if method == "hebbian" or method == "hebb":
+            tmp = np.float128(
+                self.postsynaptic_neuron.value * self.presynaptic_neuron.value
+                - self.value * np.square(self.postsynaptic_neuron.value)
+            )
+        elif method == "bcm":
+            tmp = np.float128(
+                self.postsynaptic_neuron.value
+                * (self.postsynaptic_neuron.value - self.threshold)
+                * self.presynaptic_neuron.value
+            )
+        elif method == "cocktail":
+            tmp = np.float128(
+                self.postsynaptic_neuron.value
+                * (self.postsynaptic_neuron.value - self.threshold)
+                * self.presynaptic_neuron.value
+                - self.value * np.square(self.postsynaptic_neuron.value)
+            )
+        else:
+            raise ValueError("method must be hebbian, bcm or cocktail")
+        self.value += learning_rate * tmp
 
     def metadata(self):
         return {
