@@ -109,13 +109,13 @@ This dynamic threshold mechanism is key to explaining both synaptic strengthenin
 > Combine the Hebbian learning and BCM theory, we will have the following equation:
 >
 > $$
-> \tau_w \frac{dw_{ji}}{dt} = y_j\left(y_j - \theta_j + 1\right)x_i - w_{ji}y_j^2
+> \tau_w \frac{dw_{ji}}{dt} = y_j\left(y_j - \theta_j\right)x_i - w_{ji}y_j^2
 > $$
 > 
 > And the discrete version is:
 > 
 > $$
-> w_{ji}(t+1) = w_{ji}(t) + \eta \left[y_j\left(y_j - \theta_j + 1\right)x_i - w_{ji}y_j^2\right]
+> w_{ji}(t+1) = w_{ji}(t) + \eta \left[y_j\left(y_j - \theta_j\right)x_i - w_{ji}y_j^2\right]
 > $$
 >
 > and
