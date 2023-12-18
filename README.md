@@ -109,13 +109,13 @@ This dynamic threshold mechanism is key to explaining both synaptic strengthenin
 > Combine the Hebbian learning and BCM theory, we will have the following equation:
 >
 > $$
-> \tau_w \frac{dw_{ji}}{dt} = y_j\left(y_j - \theta_j + 1\right)x_i - w_{ji}y_j^2
+> \tau_w \frac{dw_{ji}}{dt} = y_j\left(y_j - \theta_j\right)x_i - w_{ji}y_j^2
 > $$
 > 
 > And the discrete version is:
 > 
 > $$
-> w_{ji}(t+1) = w_{ji}(t) + \eta \left[y_j\left(y_j - \theta_j + 1\right)x_i - w_{ji}y_j^2\right]
+> w_{ji}(t+1) = w_{ji}(t) + \eta \left[y_j\left(y_j - \theta_j\right)x_i - w_{ji}y_j^2\right]
 > $$
 >
 > and
@@ -128,7 +128,14 @@ This dynamic threshold mechanism is key to explaining both synaptic strengthenin
 
 ### 3. Binocular Balance
 
+For a multiple-input system like the visual cortex, the Hebbian learning rule would lead to a runaway situation in which the strongest input would become stronger and the weakest input would become weaker.
+This is not what we observe in the brain.
+Instead, the brain has a mechanism to maintain a balance between the inputs.
 
+Binocular balance is a sophisticated process in our visual system, crucial for creating a unified and coherent visual experience.
+It involves the integration of distinct images perceived by each eye, ensuring that these images are harmonized for depth perception and spatial awareness.
+This neural balancing act is essential for developing and maintaining a stable and accurate representation of the three-dimensional world around us.
+Binocular balance underscores the complexity of neural processing in visual perception, highlighting the intricate interplay between sensory input and neural activity.
 
 ## Methodology
 
