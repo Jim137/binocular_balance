@@ -104,13 +104,13 @@ class sensory:
             j = i // num_cluster
             self.neurons[j].add_presynaptic_neuron(self.pseudo_neurons[i])
 
-    def update(self):
+    def update(self, learning_rate=0.1):
         for neuron in self.pseudo_neurons:
             neuron.update()
         for neuron in self.neurons:
             neuron.update()
             for weight in neuron.weights:
-                weight.update()
+                weight.update(learning_rate)
 
     def collect(self, is_collect_pseudo=False):
         collection = [neuron.metadata() for neuron in self.neurons]
@@ -138,11 +138,11 @@ class cortex:
             for j in range(sensory.number_of_neurons):
                 self.neurons[i].add_presynaptic_neuron(sensory.neurons[j])
 
-    def update(self):
+    def update(self, learning_rate=0.1):
         for neuron in self.neurons:
             neuron.update()
             for weight in neuron.weights:
-                weight.update()
+                weight.update(learning_rate)
 
     def collect(self):
         return [neuron.metadata() for neuron in self.neurons]
@@ -160,11 +160,11 @@ class motor:
             for j in range(cortex.number_of_neurons):
                 self.neurons[i].add_presynaptic_neuron(cortex.neurons[j])
 
-    def update(self):
+    def update(self, learning_rate=0.1):
         for neuron in self.neurons:
             neuron.update()
             for weight in neuron.weights:
-                weight.update()
+                weight.update(learning_rate)
 
     def collect(self):
         return [neuron.metadata() for neuron in self.neurons]
