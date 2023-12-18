@@ -18,11 +18,11 @@ class neural_network(object, metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def _update(self):
+    def _update(self, learning_rate=0.1):
         pass
 
     @abstractmethod
-    def dynamic(self, time, is_record=False):
+    def dynamic(self, time, learning_rate=0.1, is_record=False):
         pass
 
 
@@ -48,16 +48,16 @@ class nn(neural_network):
         collection["motor"] = self.motor.collect()
         return collection
 
-    def _update(self):
-        self.sensory.update()
-        self.cortex.update()
-        self.motor.update()
+    def _update(self, learning_rate=0.1):
+        self.sensory.update(learning_rate)
+        self.cortex.update(learning_rate)
+        self.motor.update(learning_rate)
 
-    def dynamic(self, time, is_record=False):
+    def dynamic(self, time, learning_rate=0.1, is_record=False):
         if is_record:
             recoding = []
         for _ in range(time):
-            self._update()
+            self._update(learning_rate)
             if is_record:
                 recoding.append(self.record())
         if is_record:
@@ -94,17 +94,17 @@ class bisensory_nn(neural_network):
         collection["motor"] = self.motor.collect()
         return collection
 
-    def _update(self):
-        self.right_sensory.update()
-        self.left_sensory.update()
-        self.cortex.update()
-        self.motor.update()
+    def _update(self, learning_rate=0.1):
+        self.right_sensory.update(learning_rate)
+        self.left_sensory.update(learning_rate)
+        self.cortex.update(learning_rate)
+        self.motor.update(learning_rate)
 
-    def dynamic(self, time, is_record=False):
+    def dynamic(self, time, learning_rate=0.1, is_record=False):
         if is_record:
             recoding = []
         for _ in range(time):
-            self._update()
+            self._update(learning_rate)
             if is_record:
                 recoding.append(self.record())
         if is_record:
