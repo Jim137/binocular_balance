@@ -27,14 +27,17 @@ class neural_network(object, metaclass=ABCMeta):
 
 
 class nn(neural_network):
-    def __init__(self, n_sensory: int, n_cortex: int, n_motor: int):
+    def __init__(
+        self, n_sensory: int, n_cortex: int, n_motor: int, is_cortex_fully_connect=False
+    ):
         super().__init__(n_sensory, n_cortex, n_motor)
         global id
         id = 0
         self.sensory = sensory(n_sensory)
         self.cortex = cortex(n_cortex)
         self.motor = motor(n_motor)
-        self.cortex.fully_connect()
+        if is_cortex_fully_connect:
+            self.cortex.fully_connect()
         self.cortex.add_sensory(self.sensory)
         self.motor.add_cortex(self.cortex)
 
