@@ -12,6 +12,7 @@ class Neuron:
         self.weights = []
         self.bias = np.float64(0)
         self.input = np.float64(0)
+        self.input_fluctuation_rate = None
         self.timestamp = 0
         self.tag = None
         self.id = id
@@ -27,7 +28,15 @@ class Neuron:
         sum = [
             weight.value * weight.presynaptic_neuron.value for weight in self.weights
         ]
-        sum.append(self.input)
+        if self.input_fluctuation_rate:
+            sum.append(
+                np.random.normal(
+                    loc=self.input,
+                    scale=self.input_fluctuation_rate,
+                )
+            )
+        else:
+            sum.append(self.input)
         self.value = gain(np.sum(sum))
         self.timestamp += 1
 
