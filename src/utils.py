@@ -17,7 +17,9 @@ def record_splitter(recording: list, nn_type: str):
     return sensory, cortex, motor
 
 
-def plot_neuron_activity(collections: list, ax, neuron_index: int or None = None):
+def plot_neuron_activity(
+    collections: list, ax, neuron_index: int or None = None, **kwargs
+):
     """
     If neuron_index is None, plot the average activity of all neurons.
     """
@@ -29,7 +31,7 @@ def plot_neuron_activity(collections: list, ax, neuron_index: int or None = None
             for neuron in collection:
                 if neuron["id"] == neuron_index:
                     activity.append(neuron["value"])
-    ax.plot(activity)
+    ax.plot(activity, **kwargs)
     return ax
 
 
@@ -38,6 +40,7 @@ def plot_weight_value(
     ax,
     presynaptic_neuron_id: int or None = None,
     postsynaptic_neuron_id: int or None = None,
+    **kwargs
 ):
     """
     If presynaptic_neuron_id or postsynaptic_neuron_id is None, plot the average weight value of missings arguments.
@@ -73,5 +76,5 @@ def plot_weight_value(
                     for weight in neuron["weights"]:
                         if weight["presynaptic_neuron_id"] == presynaptic_neuron_id:
                             values.append(weight["value"])
-    ax.plot(values)
+    ax.plot(values, **kwargs)
     return ax
