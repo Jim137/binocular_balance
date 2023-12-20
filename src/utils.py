@@ -31,9 +31,11 @@ def plot_neuron_activity(
         if neuron_index is None:
             activity.append(np.mean([neuron["value"] for neuron in collection]))
         else:
+            tmp = []
             for neuron in collection:
-                if neuron["id"] == neuron_index:
-                    activity.append(neuron["value"])
+                if neuron["id"] in neuron_index:
+                    tmp.append(neuron["value"])
+            activity.append(np.mean(tmp))
     ax.plot(activity, **kwargs)
     return ax
 
@@ -41,8 +43,8 @@ def plot_neuron_activity(
 def plot_weight_value(
     collections: list,
     ax,
-    presynaptic_neuron_id: int | None = None,
-    postsynaptic_neuron_id: int | None = None,
+    presynaptic_neuron_id: int | list | None = None,
+    postsynaptic_neuron_id: int | list | None = None,
     **kwargs
 ):
     """
@@ -61,23 +63,25 @@ def plot_weight_value(
                 )
             )
         elif presynaptic_neuron_id is None:
+            tmp = []
             for neuron in collection:
-                if neuron["id"] == postsynaptic_neuron_id:
-                    values.append(
-                        np.mean([weight["value"] for weight in neuron["weights"]])
-                    )
+                if neuron["id"] in postsynaptic_neuron_id:
+                    tmp.extend([weight["value"] for weight in neuron["weights"]])
+            values.append(np.mean(tmp))
         elif postsynaptic_neuron_id is None:
             tmp = []
             for neuron in collection:
                 for weight in neuron["weights"]:
-                    if weight["presynaptic_neuron_id"] == presynaptic_neuron_id:
+                    if weight["presynaptic_neuron_id"] in presynaptic_neuron_id:
                         tmp.append(weight["value"])
             values.append(np.mean(tmp))
         else:
+            tmp = []
             for neuron in collection:
-                if neuron["id"] == postsynaptic_neuron_id:
+                if neuron["id"] in postsynaptic_neuron_id:
                     for weight in neuron["weights"]:
-                        if weight["presynaptic_neuron_id"] == presynaptic_neuron_id:
-                            values.append(weight["value"])
+                        if weight["presynaptic_neuron_id"] in presynaptic_neuron_id:
+                            tmp.append(weight["value"])
+            values.append(np.mean(tmp))
     ax.plot(values, **kwargs)
     return ax
