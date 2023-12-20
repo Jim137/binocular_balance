@@ -26,7 +26,9 @@ def plot_neuron_activity(collections: list, ax, neuron_index: int or None = None
         if neuron_index is None:
             activity.append(np.mean([neuron["value"] for neuron in collection]))
         else:
-            activity.append(collection[neuron_index]["value"])
+            for neuron in collection:
+                if neuron["id"] == neuron_index:
+                    activity.append(neuron["value"])
     ax.plot(activity)
     return ax
 
