@@ -31,8 +31,6 @@ class nn(neural_network):
         self, n_sensory: int, n_cortex: int, n_motor: int, is_cortex_fully_connect=False
     ):
         super().__init__(n_sensory, n_cortex, n_motor)
-        global id
-        id = 0
         self.sensory = sensory(n_sensory)
         self.cortex = cortex(n_cortex)
         self.motor = motor(n_motor)
@@ -72,8 +70,6 @@ class nn(neural_network):
 class bisensory_nn(neural_network):
     def __init__(self, n_sensory: int, n_cortex: int, n_motor: int):
         super().__init__(n_sensory, n_cortex, n_motor)
-        global id
-        id = 0
         self.right_sensory = sensory(n_sensory)
         self.left_sensory = sensory(n_sensory)
         self.cortex = cortex(n_cortex)
