@@ -21,7 +21,11 @@ def record_splitter(recording: list, nn_type: str):
 
 
 def plot_neuron_activity(
-    collections: list, ax, neuron_index: int | list | None = None, **kwargs
+    collections: list,
+    ax,
+    neuron_index: int | list | None = None,
+    is_box_plot: bool = False,
+    **kwargs
 ):
     """
     If neuron_index is None, plot the average activity of all neurons.
@@ -39,7 +43,10 @@ def plot_neuron_activity(
                 if neuron["id"] in neuron_index:
                     tmp.append(neuron["value"])
             activity.append(np.mean(tmp))
-    ax.plot(activity, **kwargs)
+    if is_box_plot:
+        ax = box_plot(activity, ax, **kwargs)
+    else:
+        ax.plot(activity, **kwargs)
     return ax
 
 
@@ -48,6 +55,7 @@ def plot_weight_value(
     ax,
     presynaptic_neuron_id: int | list | None = None,
     postsynaptic_neuron_id: int | list | None = None,
+    is_box_plot: bool = False,
     **kwargs
 ):
     """
@@ -91,5 +99,25 @@ def plot_weight_value(
                         if weight["presynaptic_neuron_id"] in presynaptic_neuron_id:
                             tmp.append(weight["value"])
             values.append(np.mean(tmp))
-    ax.plot(values, **kwargs)
+    if is_box_plot:
+        ax = box_plot(values, ax, **kwargs)
+    else:
+        ax.plot(values, **kwargs)
+    return ax
+
+
+def box_plot(seq, ax, **kwargs):
+    if "num_box" in kwargs:
+        num_box = kwargs["num_box"]
+        del kwargs["num_box"]
+    else:
+        num_box = 10
+    n = len(seq)
+    box_size = int(np.ceil(n / num_box))
+    boxes = []
+    for i in range(num_box):
+        boxes.append(seq[i * box_size : (i + 1) * box_size])
+    ax.boxplot(boxes)
+    ax.plot(np.arange(1, num_box + 1), [np.mean(box) for box in boxes], "r-", **kwargs)
+    ax.set_xticklabels(np.arange(1, num_box + 1) * box_size)
     return ax
