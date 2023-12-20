@@ -3,13 +3,16 @@ import matplotlib.pyplot as plt
 
 
 def record_splitter(recording: list, nn_type: str):
-    sensory = []
+    if nn_type == "bisensory":
+        sensory = [[], []]
+    else:
+        sensory = []
     cortex = []
     motor = []
     for collection in recording:
         if nn_type == "bisensory":
-            sensory.append([collection["right_sensory"]])
-            sensory.append([collection["left_sensory"]])
+            sensory[0].append(collection["right_sensory"])
+            sensory[1].append(collection["left_sensory"])
         else:
             sensory.append(collection["sensory"])
         cortex.append(collection["cortex"])
