@@ -1,7 +1,6 @@
 import numpy as np
 
 
-global id
 id = 0
 
 
