@@ -25,6 +25,10 @@ class neural_network(object, metaclass=ABCMeta):
     def dynamic(self, time, learning_rate=0.1, is_record=False):
         pass
 
+    @abstractmethod
+    def __iter__(self):
+        pass
+
 
 class nn(neural_network):
     def __init__(
@@ -65,6 +69,13 @@ class nn(neural_network):
             return recoding
         else:
             return None
+
+    def __iter__(self):
+        neurons = []
+        neurons.extend(self.sensory.neurons)
+        neurons.extend(self.cortex.neurons)
+        neurons.extend(self.motor.neurons)
+        return iter(neurons)
 
 
 class bisensory_nn(neural_network):
@@ -110,3 +121,11 @@ class bisensory_nn(neural_network):
             return recoding
         else:
             return None
+
+    def __iter__(self):
+        neurons = []
+        neurons.extend(self.right_sensory.neurons)
+        neurons.extend(self.left_sensory.neurons)
+        neurons.extend(self.cortex.neurons)
+        neurons.extend(self.motor.neurons)
+        return iter(neurons)
