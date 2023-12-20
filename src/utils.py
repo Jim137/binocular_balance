@@ -25,6 +25,7 @@ def plot_neuron_activity(
     ax,
     neuron_index: int | list | None = None,
     is_box_plot: bool = False,
+    is_mean_plot: bool = False,
     **kwargs
 ):
     """
@@ -45,6 +46,8 @@ def plot_neuron_activity(
             activity.append(np.mean(tmp))
     if is_box_plot:
         ax = box_plot(activity, ax, **kwargs)
+    elif is_mean_plot:
+        ax = mean_plot(activity, ax, **kwargs)
     else:
         ax.plot(activity, **kwargs)
     return ax
@@ -56,6 +59,7 @@ def plot_weight_value(
     presynaptic_neuron_id: int | list | None = None,
     postsynaptic_neuron_id: int | list | None = None,
     is_box_plot: bool = False,
+    is_mean_plot: bool = False,
     **kwargs
 ):
     """
@@ -101,6 +105,8 @@ def plot_weight_value(
             values.append(np.mean(tmp))
     if is_box_plot:
         ax = box_plot(values, ax, **kwargs)
+    elif is_mean_plot:
+        ax = mean_plot(values, ax, **kwargs)
     else:
         ax.plot(values, **kwargs)
     return ax
@@ -120,4 +126,13 @@ def box_plot(seq, ax, **kwargs):
     ax.boxplot(boxes)
     ax.plot(np.arange(1, num_box + 1), [np.mean(box) for box in boxes], "r-", **kwargs)
     ax.set_xticklabels(np.arange(1, num_box + 1) * box_size)
+    return ax
+
+
+def mean_plot(seq, ax, **kwargs):
+    num_cluster = len(seq) // 100
+    boxes = []
+    for i in range(100):
+        boxes.append(seq[i * num_cluster : (i + 1) * num_cluster])
+    ax.plot(np.arange(100) * num_cluster, [np.mean(box) for box in boxes], **kwargs)
     return ax
