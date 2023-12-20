@@ -26,6 +26,9 @@ def plot_neuron_activity(
     """
     If neuron_index is None, plot the average activity of all neurons.
     """
+    if type(neuron_index) == int:
+        neuron_index = [neuron_index]
+
     activity = []
     for collection in collections:
         if neuron_index is None:
@@ -50,6 +53,11 @@ def plot_weight_value(
     """
     If presynaptic_neuron_id or postsynaptic_neuron_id is None, plot the average weight value of missings arguments.
     """
+    if type(presynaptic_neuron_id) == int:
+        presynaptic_neuron_id = [presynaptic_neuron_id]
+    if type(postsynaptic_neuron_id) == int:
+        postsynaptic_neuron_id = [postsynaptic_neuron_id]
+
     values = []
     for collection in collections:
         if presynaptic_neuron_id is None and postsynaptic_neuron_id is None:
