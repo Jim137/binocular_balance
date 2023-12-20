@@ -21,7 +21,7 @@ def record_splitter(recording: list, nn_type: str):
 
 
 def plot_neuron_activity(
-    collections: list, ax, neuron_index: int or None = None, **kwargs
+    collections: list, ax, neuron_index: int | list | None = None, **kwargs
 ):
     """
     If neuron_index is None, plot the average activity of all neurons.
@@ -41,8 +41,8 @@ def plot_neuron_activity(
 def plot_weight_value(
     collections: list,
     ax,
-    presynaptic_neuron_id: int or None = None,
-    postsynaptic_neuron_id: int or None = None,
+    presynaptic_neuron_id: int | None = None,
+    postsynaptic_neuron_id: int | None = None,
     **kwargs
 ):
     """
