@@ -126,11 +126,11 @@ class sensory:
             j = i // num_cluster
             self.neurons[j].input += data[i] / num_cluster
 
-    def update(self, learning_rate=0.1):
+    def update(self, learning_rate=0.1, method="cocktail"):
         for neuron in self.neurons:
             neuron.update()
             for weight in neuron.weights:
-                weight.update(learning_rate)
+                weight.update(learning_rate, method=method)
 
     def collect(self):
         collection = [neuron.metadata() for neuron in self.neurons]
@@ -156,11 +156,11 @@ class cortex:
             for j in range(sensory.number_of_neurons):
                 self.neurons[i].add_presynaptic_neuron(sensory.neurons[j])
 
-    def update(self, learning_rate=0.1):
+    def update(self, learning_rate=0.1, method="cocktail"):
         for neuron in self.neurons:
             neuron.update()
             for weight in neuron.weights:
-                weight.update(learning_rate)
+                weight.update(learning_rate, method=method)
 
     def collect(self):
         return [neuron.metadata() for neuron in self.neurons]
@@ -178,11 +178,11 @@ class motor:
             for j in range(cortex.number_of_neurons):
                 self.neurons[i].add_presynaptic_neuron(cortex.neurons[j])
 
-    def update(self, learning_rate=0.1):
+    def update(self, learning_rate=0.1, method="cocktail"):
         for neuron in self.neurons:
             neuron.update()
             for weight in neuron.weights:
-                weight.update(learning_rate)
+                weight.update(learning_rate, method=method)
 
     def collect(self):
         return [neuron.metadata() for neuron in self.neurons]
