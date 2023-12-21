@@ -10,7 +10,7 @@ class Neuron:
         self.value = np.float64(0)
         self.presynaptic_neuron = []
         self.weights = []
-        self.bias = np.float64(0)
+        self.bias = None
         self.input = np.float64(0)
         self.input_fluctuation_rate = None
         self.timestamp = 0
@@ -37,6 +37,8 @@ class Neuron:
             )
         else:
             sum.append(self.input)
+        if self.bias:
+            sum.append(self.bias)
         self.value = gain(np.sum(sum))
         self.timestamp += 1
 
