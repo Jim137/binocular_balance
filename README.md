@@ -128,14 +128,17 @@ This dynamic threshold mechanism is key to explaining both synaptic strengthenin
 
 ### 3. Binocular Balance
 
-For a multiple-input system like the visual cortex, the Hebbian learning rule would lead to a runaway situation in which the strongest input would become stronger and the weakest input would become weaker.
-This is not what we observe in the brain.
-Instead, the brain has a mechanism to maintain a balance between the inputs.
+Binocular balance, a critical aspect of our visual system, ensures a unified and coherent visual experience. 
+It integrates distinct images from each eye, harmonizing them for depth perception and spatial awareness. 
+This process is vital for constructing a stable, accurate representation of our three-dimensional world, illustrating the complexity of neural processing in visual perception and the balance between sensory input and neural activity.
 
-Binocular balance is a sophisticated process in our visual system, crucial for creating a unified and coherent visual experience.
-It involves the integration of distinct images perceived by each eye, ensuring that these images are harmonized for depth perception and spatial awareness.
-This neural balancing act is essential for developing and maintaining a stable and accurate representation of the three-dimensional world around us.
-Binocular balance underscores the complexity of neural processing in visual perception, highlighting the intricate interplay between sensory input and neural activity.
+The Hebbian learning rule, if applied simplistically to a multiple-input system like the visual cortex, might lead to a dominance of stronger inputs over weaker ones. 
+However, in reality, sensory inputs are not always of equal strength, and the brain must adapt to this imbalance. 
+In extreme cases, such as with a sensory impairment, this can disrupt neural balance.
+
+> [!NOTE]
+> In clinical practice, the treatment for amblyopia (lazy eye) often involves covering the normal eye to enhance neural connections in the amblyopic eye. 
+> This approach is effective in children, where neural connections are still adaptable, but less so post-adolescence when these connections become more fixed.
 
 ## Methodology
 
