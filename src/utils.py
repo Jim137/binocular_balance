@@ -124,7 +124,7 @@ def box_plot(seq, ax, **kwargs):
     for i in range(num_box):
         boxes.append(seq[i * box_size : (i + 1) * box_size])
     ax.boxplot(boxes)
-    ax.plot(np.arange(1, num_box + 1), [np.mean(box) for box in boxes], "r-", **kwargs)
+    ax.plot(np.arange(1, num_box + 1), [np.mean(box) for box in boxes], **kwargs)
     ax.set_xticklabels(np.arange(1, num_box + 1) * box_size)
     return ax
 
