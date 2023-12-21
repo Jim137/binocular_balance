@@ -142,6 +142,13 @@ In extreme cases, such as with a sensory impairment, this can disrupt neural bal
 
 ## Methodology
 
+### 1. Binocular Balance
+
+Consider a bi-sensory system model, we introduce a negative bias to one of sensory while maintaining a neutral bias in the other. 
+The system undergoes three distinct phases: 1. Pre-treatment, where both inputs receive equal random arrays; 2. Treatment, where the input strength to the normal sensory is deliberately reduced; 3. Post-treatment, where the normal sensory input strength is restored, and the learning rate is significantly reduced to simulate aging effects in neural plasticity.
+
+### 2. Binocular Deprivation
+
 
 
 ## Results
