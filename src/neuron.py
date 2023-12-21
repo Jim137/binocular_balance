@@ -1,7 +1,6 @@
 import numpy as np
 
 
-global id
 id = 0
 
 
@@ -11,8 +10,9 @@ class Neuron:
         self.value = np.float64(0)
         self.presynaptic_neuron = []
         self.weights = []
-        self.bias = np.float64(0)
+        self.bias = None
         self.input = np.float64(0)
+        self.input_fluctuation_rate = None
         self.timestamp = 0
         self.tag = None
         self.id = id
@@ -28,7 +28,17 @@ class Neuron:
         sum = [
             weight.value * weight.presynaptic_neuron.value for weight in self.weights
         ]
-        sum.append(self.input)
+        if self.input_fluctuation_rate:
+            sum.append(
+                np.random.normal(
+                    loc=self.input,
+                    scale=self.input_fluctuation_rate,
+                )
+            )
+        else:
+            sum.append(self.input)
+        if self.bias:
+            sum.append(self.bias)
         self.value = gain(np.sum(sum))
         self.timestamp += 1
 
@@ -118,11 +128,11 @@ class sensory:
             j = i // num_cluster
             self.neurons[j].input += data[i] / num_cluster
 
-    def update(self, learning_rate=0.1):
+    def update(self, learning_rate=0.1, method="cocktail"):
         for neuron in self.neurons:
             neuron.update()
             for weight in neuron.weights:
-                weight.update(learning_rate)
+                weight.update(learning_rate, method=method)
 
     def collect(self):
         collection = [neuron.metadata() for neuron in self.neurons]
@@ -148,11 +158,11 @@ class cortex:
             for j in range(sensory.number_of_neurons):
                 self.neurons[i].add_presynaptic_neuron(sensory.neurons[j])
 
-    def update(self, learning_rate=0.1):
+    def update(self, learning_rate=0.1, method="cocktail"):
         for neuron in self.neurons:
             neuron.update()
             for weight in neuron.weights:
-                weight.update(learning_rate)
+                weight.update(learning_rate, method=method)
 
     def collect(self):
         return [neuron.metadata() for neuron in self.neurons]
@@ -170,11 +180,11 @@ class motor:
             for j in range(cortex.number_of_neurons):
                 self.neurons[i].add_presynaptic_neuron(cortex.neurons[j])
 
-    def update(self, learning_rate=0.1):
+    def update(self, learning_rate=0.1, method="cocktail"):
         for neuron in self.neurons:
             neuron.update()
             for weight in neuron.weights:
-                weight.update(learning_rate)
+                weight.update(learning_rate, method=method)
 
     def collect(self):
         return [neuron.metadata() for neuron in self.neurons]

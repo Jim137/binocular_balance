@@ -18,11 +18,15 @@ class neural_network(object, metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def _update(self, learning_rate=0.1):
+    def _update(self, learning_rate=0.1, method="cocktail"):
         pass
 
     @abstractmethod
-    def dynamic(self, time, learning_rate=0.1, is_record=False):
+    def dynamic(self, time, learning_rate=0.1, method="cocktail", is_record=False):
+        pass
+
+    @abstractmethod
+    def __iter__(self):
         pass
 
 
@@ -31,8 +35,6 @@ class nn(neural_network):
         self, n_sensory: int, n_cortex: int, n_motor: int, is_cortex_fully_connect=False
     ):
         super().__init__(n_sensory, n_cortex, n_motor)
-        global id
-        id = 0
         self.sensory = sensory(n_sensory)
         self.cortex = cortex(n_cortex)
         self.motor = motor(n_motor)
@@ -51,16 +53,16 @@ class nn(neural_network):
         collection["motor"] = self.motor.collect()
         return collection
 
-    def _update(self, learning_rate=0.1):
-        self.sensory.update(learning_rate)
-        self.cortex.update(learning_rate)
-        self.motor.update(learning_rate)
+    def _update(self, learning_rate=0.1, method="cocktail"):
+        self.sensory.update(learning_rate, method)
+        self.cortex.update(learning_rate, method)
+        self.motor.update(learning_rate, method)
 
-    def dynamic(self, time, learning_rate=0.1, is_record=False):
+    def dynamic(self, time, learning_rate=0.1, method="cocktail", is_record=False):
         if is_record:
             recoding = []
         for _ in range(time):
-            self._update(learning_rate)
+            self._update(learning_rate, method)
             if is_record:
                 recoding.append(self.record())
         if is_record:
@@ -68,12 +70,17 @@ class nn(neural_network):
         else:
             return None
 
+    def __iter__(self):
+        neurons = []
+        neurons.extend(self.sensory.neurons)
+        neurons.extend(self.cortex.neurons)
+        neurons.extend(self.motor.neurons)
+        return iter(neurons)
+
 
 class bisensory_nn(neural_network):
     def __init__(self, n_sensory: int, n_cortex: int, n_motor: int):
         super().__init__(n_sensory, n_cortex, n_motor)
-        global id
-        id = 0
         self.right_sensory = sensory(n_sensory)
         self.left_sensory = sensory(n_sensory)
         self.cortex = cortex(n_cortex)
@@ -97,20 +104,28 @@ class bisensory_nn(neural_network):
         collection["motor"] = self.motor.collect()
         return collection
 
-    def _update(self, learning_rate=0.1):
-        self.right_sensory.update(learning_rate)
-        self.left_sensory.update(learning_rate)
-        self.cortex.update(learning_rate)
-        self.motor.update(learning_rate)
+    def _update(self, learning_rate=0.1, method="cocktail"):
+        self.right_sensory.update(learning_rate, method)
+        self.left_sensory.update(learning_rate, method)
+        self.cortex.update(learning_rate, method)
+        self.motor.update(learning_rate, method)
 
-    def dynamic(self, time, learning_rate=0.1, is_record=False):
+    def dynamic(self, time, learning_rate=0.1, method="cocktail", is_record=False):
         if is_record:
             recoding = []
         for _ in range(time):
-            self._update(learning_rate)
+            self._update(learning_rate, method)
             if is_record:
                 recoding.append(self.record())
         if is_record:
             return recoding
         else:
             return None
+
+    def __iter__(self):
+        neurons = []
+        neurons.extend(self.right_sensory.neurons)
+        neurons.extend(self.left_sensory.neurons)
+        neurons.extend(self.cortex.neurons)
+        neurons.extend(self.motor.neurons)
+        return iter(neurons)
