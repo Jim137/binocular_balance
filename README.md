@@ -169,7 +169,14 @@ The detailed methods are in [bd.ipynb](https://github.com/Jim137/binocular_balan
 
 ## Results
 
+### 1. Binocular Balance
 
+![Weight value before/after the treatment](https://raw.githubusercontent.com/Jim137/binocular_balance/main/doc/fig/bbalance.png)
+
+The provided figure illustrates synaptic weight (*average) changes before, during, and after the treatment.
+Initially, the synaptic weight of the normal sensory input is stronger compared to the amblyopic sensory input.
+During the treatment phase, we observe a more rapid reduction in the synaptic weight of the normal sensory input.
+Post-treatment, the synaptic weight of the amblyopic sensory input becomes slightly stronger than that of the normal sensory, achieving a more balanced signal transmission to the cortex.
 
 ## Conclusion
 
