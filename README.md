@@ -145,11 +145,27 @@ In extreme cases, such as with a sensory impairment, this can disrupt neural bal
 ### 1. Binocular Balance
 
 Consider a bi-sensory system model, we introduce a negative bias to one of sensory while maintaining a neutral bias in the other. 
-The system undergoes three distinct phases: 1. Pre-treatment, where both inputs receive equal random arrays; 2. Treatment, where the input strength to the normal sensory is deliberately reduced; 3. Post-treatment, where the normal sensory input strength is restored, and the learning rate is significantly reduced to simulate aging effects in neural plasticity.
+The system undergoes three distinct phases: 
+
+1. Pre-treatment, where both inputs receive equal random arrays.
+2. Treatment, where the input strength to the normal sensory is deliberately reduced.
+3. Post-treatment, where the normal sensory input strength is restored, and the learning rate is significantly reduced to simulate aging effects in neural plasticity.
+
+The detailed methods are in [bb.ipynb](https://github.com/Jim137/binocular_balance/blob/main/bb.ipynb).
 
 ### 2. Binocular Deprivation
 
+We construct another bi-sensory system model.
+In this bi-sensory system model focusing on binocular deprivation, both sensory inputs are initially unbiased. 
+The model involves five phases:
 
+1. Normal Rearing, where both inputs receive identical arrays.
+2. Monocular Deprivation, reducing the input strength to one sensory system.
+3. Binocular Deprivation, reducing input strength to both sensory systems.
+4. Reverse Suture, restoring the initially reduced input to one sensory.
+5. Binocular Recovery, where both systems receive full-strength, unbiased inputs.
+
+The detailed methods are in [bd.ipynb](https://github.com/Jim137/binocular_balance/blob/main/bb.ipynb).
 
 ## Results
 
