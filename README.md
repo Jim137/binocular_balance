@@ -169,7 +169,33 @@ The detailed methods are in [bd.ipynb](https://github.com/Jim137/binocular_balan
 
 ## Results
 
+### 1. Binocular Balance
 
+![Weight value before/after the treatment](https://raw.githubusercontent.com/Jim137/binocular_balance/main/doc/fig/bbalance.png)
+
+The provided figure illustrates synaptic weight (*average) changes before, during, and after the treatment.
+Initially, the synaptic weight of the normal sensory input is stronger compared to the amblyopic sensory input.
+During the treatment phase, we observe a more rapid reduction in the synaptic weight of the normal sensory input.
+Post-treatment, the synaptic weight of the amblyopic sensory input becomes slightly stronger than that of the normal sensory, achieving a more balanced signal transmission to the cortex.
+
+### 2. Binocular Deprivation
+
+![Weight value between sensory neuron and cortex neuron under different conditions](https://raw.githubusercontent.com/Jim137/binocular_balance/main/doc/fig/bdeprivation.png)
+
+The above figure illustrates synaptic weight changes between the right/left sensory neuron and the cortex neuron under various conditions:
+
+1. Normal Rearing: Equal synaptic weights for both sensory inputs.
+2. Monocular Deprivation: Reduced synaptic weight in the deprived sensory neuron.
+3. Binocular Deprivation: Slight reduction in synaptic weights for both neurons.
+4. Reverse Suture: Restoration of the initially deprived neuron's synaptic weight, coupled with a reduction in the other.
+5. Binocular Recovery: An increase in synaptic weights for both neurons.
+
+Comparing these results with real experimental data.
+
+![Real experiment](https://raw.githubusercontent.com/Jim137/binocular_balance/main/doc/fig/bdeprivation_r.png)
+
+Our model aligns closely except in the final phase, where the actual experiment achieves binocular balance.
+This discrepancy offers an opportunity for further investigation into the model's parameters or assumptions.
 
 ## Conclusion
 
