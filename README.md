@@ -208,3 +208,5 @@ Based on the results, we have following conclusions:
 
 ## Reference
 
+1. H.-H. Lin, Handouts in the course, "Introduction to Neurophysics", National Tsing Hua University, 2023.
+2. [W. Gerstner, W. M. Kistler, R. Naud and L. Paninski, "Neuronal Dynamics: From Single Neurons to Networks and Models of Cognition", Cambridge University Press, 2014.](https://neuronaldynamics.epfl.ch/index.html)
