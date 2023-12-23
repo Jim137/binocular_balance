@@ -165,7 +165,7 @@ The model involves five phases:
 4. Reverse Suture, restoring the initially reduced input to one sensory.
 5. Binocular Recovery, where both systems receive full-strength, unbiased inputs.
 
-The detailed methods are in [bd.ipynb](https://github.com/Jim137/binocular_balance/blob/main/bb.ipynb).
+The detailed methods are in [bd.ipynb](https://github.com/Jim137/binocular_balance/blob/main/bd.ipynb).
 
 ## Results
 
