@@ -199,12 +199,14 @@ This discrepancy offers an opportunity for further investigation into the model'
 
 ## Conclusion
 
+Based on the results, we have following conclusions:
 
+1. Effective amblyopia treatment involves reducing input strength to the normal sensory, demonstrating the adaptability of neural connections.
+2. Under typical conditions, binocular balance is naturally achieved through the mechanisms of Hebbian learning and BCM theory.
+3. In the case of binocular deprivation, early-age synaptic weight adjustments are feasible due to higher learning rates.
+4. Real-world experiments on binocular deprivation show that post-recovery phase synaptic weights can balance out with equal strength inputs, even if initial synaptic weights were imbalanced.
 
 ## Reference
 
-
-
-## Appendix
-
-
+1. H.-H. Lin, Handouts in the course, "Introduction to Neurophysics", National Tsing Hua University, 2023.
+2. [W. Gerstner, W. M. Kistler, R. Naud and L. Paninski, "Neuronal Dynamics: From Single Neurons to Networks and Models of Cognition", Cambridge University Press, 2014.](https://neuronaldynamics.epfl.ch/index.html)
