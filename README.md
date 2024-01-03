@@ -125,6 +125,8 @@ This dynamic threshold mechanism is key to explaining both synaptic strengthenin
 > $$
 >
 > Which are the iteration what we will use in the following simulations.
+>
+> Note that in this case, the synaptic weight will **NOT CONVERGE**, since the oja's term is in the same order as the BCM's term.
 
 ### 3. Binocular Balance
 
